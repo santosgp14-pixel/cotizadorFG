@@ -1,0 +1,44 @@
+/* Impresión: solo la cotización, en la mitad superior de una hoja carta */
+@page {
+  size: letter portrait;
+  margin: 0;
+}
+
+html,
+body {
+  background: #fff !important;
+  margin: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.no-print {
+  display: none !important;
+}
+
+.layout {
+  display: block !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: none !important;
+}
+
+.preview-wrap {
+  box-shadow: none !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.cotizacion {
+  transform: none !important;
+  width: 8.5in;
+  height: 5.5in;
+  min-height: 0;
+  overflow: hidden;
+  border-bottom: 1px dashed #999;
+  /* guía de corte */
+}
+
+.cot-tabla tr {
+  page-break-inside: avoid;
+}
