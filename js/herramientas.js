@@ -40,5 +40,14 @@ const HERRAMIENTAS = [
     categoria: 'Gestión',
     estado: 'activo',
   },
+  {
+    id: 'centro-guias',
+    titulo: 'Guías e Instructivos',
+    descripcion: 'Material informativo y guías rápidas de atención médica para entrega directa en PDF a clientes.',
+    url: 'guias/',
+    icono: '📥',
+    categoria: 'Clientes y Recursos',
+    estado: 'activo',
+  },
 ];
 
