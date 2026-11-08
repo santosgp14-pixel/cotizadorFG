@@ -1,0 +1,305 @@
+:root {
+  --verde: #7a9a1e;
+  --azul: #1f3f8a;
+  --azul-claro: #e8eef9;
+  --gris: #6b7280;
+  --borde: #d6dbe4;
+  --rojo: #c62828;
+  --fondo: #f2f4f8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--fondo);
+  color: #1f2937;
+  line-height: 1.5;
+}
+
+/* Header Móvil */
+.barra-movil {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: #fff;
+  border-bottom: 3px solid var(--verde);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+}
+.barra-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-movil {
+  height: 44px;
+}
+.barra-info h1 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--azul);
+}
+.barra-info p {
+  margin: 0;
+  font-size: .75rem;
+  color: var(--gris);
+}
+.btn-accion-movil {
+  padding: 6px 10px;
+  font-size: .8rem;
+  font-weight: 600;
+  background: var(--azul-claro);
+  border: 1px solid var(--azul);
+  color: var(--azul);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Contenedor */
+.contenedor-guia-movil {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Banner de Cabecera */
+.tarjeta-banner {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.banner-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+.logo-hispana-m {
+  height: 52px;
+  object-fit: contain;
+}
+.logo-fg-m {
+  height: 56px;
+  object-fit: contain;
+}
+.pill-titulo-m {
+  background: linear-gradient(135deg, #0284c7, #1f3f8a);
+  color: #fff;
+  padding: 8px 24px;
+  border-radius: 30px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: .05em;
+  box-shadow: 0 3px 8px rgba(31,63,138,.25);
+}
+.slogan-m {
+  margin: 0;
+  font-size: .8rem;
+  font-style: italic;
+  color: var(--gris);
+}
+
+/* Tarjetas de Sección */
+.card-seccion {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.seccion-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--azul-claro);
+  padding-bottom: 8px;
+}
+.icono-head { font-size: 1.4rem; }
+.seccion-head h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--azul);
+  font-weight: 800;
+}
+
+/* Botones de Teléfono para Celular */
+.instruccion-tel {
+  margin: 0 0 10px;
+  font-size: .84rem;
+  color: var(--gris);
+}
+.botones-llamada {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.btn-tel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1.5px solid var(--azul);
+  border-left-width: 6px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #111;
+  transition: all .15s ease;
+}
+.btn-tel:hover {
+  background: var(--azul-claro);
+  transform: translateY(-1px);
+}
+.tel-icon { font-size: 1.4rem; }
+.tel-textos {
+  display: flex;
+  flex-direction: column;
+}
+.tel-textos strong {
+  font-size: 1.05rem;
+  color: var(--azul);
+}
+.tel-textos small {
+  font-size: .75rem;
+  color: var(--gris);
+}
+
+/* Pasos */
+.pasos-caja {
+  background: #fafbfd;
+  border: 1px solid var(--borde);
+  padding: 14px;
+  border-radius: 8px;
+}
+.pasos-caja h3 {
+  margin: 0 0 8px;
+  font-size: .88rem;
+  color: #111;
+}
+.pasos-caja ol {
+  margin: 0;
+  padding-left: 18px;
+  font-size: .84rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Salas de Urgencias */
+.banner-beneficio {
+  background: #eef8ec;
+  border-left: 5px solid var(--verde);
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.banner-beneficio p {
+  margin: 0;
+  font-size: .86rem;
+  color: #27400d;
+}
+
+.lista-centros-movil {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.item-centro {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fafbfd;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--borde);
+}
+.punto-centro {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex: none;
+}
+.punto-centro.azul { background: var(--azul); }
+.punto-centro.rojo { background: var(--rojo); }
+.punto-centro.verde { background: var(--verde); }
+.item-centro strong { font-size: .92rem; color: #111; display: block; }
+.item-centro p { margin: 2px 0 0; font-size: .78rem; color: var(--gris); }
+
+.badge-24h-movil {
+  background: #fdf2f2;
+  border: 1.5px dashed var(--rojo);
+  color: var(--rojo);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: .82rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Chips de Servicios */
+.chips-servicios {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.chips-servicios li {
+  background: #fafbfd;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: .84rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Footer Cliente */
+.footer-cliente {
+  text-align: center;
+  padding: 18px 10px 30px;
+  color: var(--gris);
+  font-size: .82rem;
+}
+.footer-cliente p { margin: 3px 0; }
+.sub-fg { font-size: .76rem; }
+.link-portal {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--azul);
+  font-weight: 600;
+  text-decoration: none;
+}
+.link-portal:hover { text-decoration: underline; }
+
+/* Impresión desde móvil */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+  .contenedor-guia-movil { max-width: none; padding: 0; }
+  .card-seccion { box-shadow: none; border: 1px solid var(--borde); page-break-inside: avoid; }
+}
+

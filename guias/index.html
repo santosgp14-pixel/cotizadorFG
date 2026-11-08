@@ -36,11 +36,24 @@
           <button type="button" class="btn btn-primary btn-block" id="btnDescargarPdf">
             📥 Descargar / Imprimir en PDF
           </button>
+          <button type="button" class="btn btn-secondary btn-block" id="btnVerQr" style="margin-top: 8px;">
+            📄 Probar enlace directo al PDF
+          </button>
           <small class="tip-impresion">
             💡 <strong>Consejo para PDF:</strong> En la ventana de impresión, selecciona <em>"Guardar como PDF"</em> y
             asegúrate de marcar la casilla <em>"Gráficos de fondo"</em>.
           </small>
         </div>
+      </div>
+
+      <!-- Tarjeta QR Rápida en barra lateral -->
+      <div class="panel-qr-lateral" id="panelQrLateral">
+        <h4>Código QR directo al PDF</h4>
+        <div class="qr-box-preview" id="qrLateralImg"></div>
+        <p class="qr-instruccion">Al escanear con la cámara del celular, abrirá o descargará directamente el archivo PDF
+          de la guía.</p>
+        <button type="button" class="btn btn-ghost btn-sm btn-block" id="btnDescargarSoloQr">💾 Descargar Imagen
+          QR</button>
       </div>
     </aside>
 
@@ -58,146 +71,154 @@
         <article class="hoja-guia horizontal" id="docGuiaRapida">
           <!-- Banner Superior / Decorativo -->
           <div class="decoracion-header">
-              <div class="header-izq">
-                <img src="../img/logo-hispana.jpg" alt="Hispana de Seguros" class="logo-hispana">
-                <div class="pill-titulo">
-                  <span class="pill-tag">TU GUÍA RÁPIDA</span>
+            <div class="header-izq">
+              <img src="../img/logo-hispana.jpg" alt="Hispana de Seguros" class="logo-hispana">
+              <div class="pill-titulo">
+                <span class="pill-tag">TU GUÍA RÁPIDA</span>
+              </div>
+            </div>
+            <div class="branding-header">
+              <img src="../img/logo.png" alt="Félix García - Corredor de Seguros" class="logo-guia">
+              <span class="slogan-fg">El Seguro no es un gasto, es una Inversión</span>
+            </div>
+          </div>
+
+          <!-- Cuerpo Tríptico en 3 Columnas Estructuradas -->
+          <div class="triptico-grid">
+
+            <!-- Columna 1: Servicios a tu alcance -->
+            <div class="col-triptico col-1">
+              <div class="ilustracion-box">
+                <svg viewBox="0 0 100 100" class="svg-il" fill="none">
+                  <!-- Fachada Hospital moderno -->
+                  <polygon points="50,14 86,30 14,30" fill="#1f3f8a" />
+                  <rect x="20" y="30" width="60" height="58" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" />
+                  <!-- Cruz roja médica -->
+                  <circle cx="50" cy="46" r="13" fill="#ffffff" stroke="#c62828" stroke-width="2.5" />
+                  <path d="M50 38 V54 M42 46 H58" stroke="#c62828" stroke-width="4.5" stroke-linecap="round" />
+                  <!-- Ventanas y entrada -->
+                  <rect x="26" y="62" width="10" height="12" fill="#7a9a1e" />
+                  <rect x="64" y="62" width="10" height="12" fill="#7a9a1e" />
+                  <rect x="43" y="66" width="14" height="22" rx="2" fill="#1f3f8a" />
+                  <!-- Ambulancia rápida -->
+                  <rect x="66" y="72" width="26" height="16" rx="2" fill="#ffffff" stroke="#1f3f8a" stroke-width="2" />
+                  <circle cx="72" cy="88" r="4" fill="#334155" />
+                  <circle cx="86" cy="88" r="4" fill="#334155" />
+                  <path d="M78 76 V82 M75 79 H81" stroke="#c62828" stroke-width="2" />
+                </svg>
+              </div>
+
+              <h2 class="col-titulo">SERVICIOS A TU ALCANCE</h2>
+              <ul class="lista-servicios-guia">
+                <li><strong>HCM</strong> (Hospitalización, Cirugía y Maternidad)</li>
+                <li><strong>Telemedicina</strong> 24/7</li>
+                <li><strong>Entrega de Medicamentos</strong></li>
+                <li><strong>Atención In situ</strong></li>
+                <li><strong>Urgencias</strong></li>
+                <li><strong>Emergencia</strong></li>
+              </ul>
+            </div>
+
+            <!-- Columna 2: Telemedicina y Pasos -->
+            <div class="col-triptico col-2">
+              <div class="ilustracion-box">
+                <svg viewBox="0 0 100 100" class="svg-il" fill="none">
+                  <!-- Teléfono inteligente -->
+                  <rect x="25" y="8" width="50" height="84" rx="8" fill="#1f3f8a" />
+                  <rect x="29" y="16" width="42" height="66" rx="3" fill="#ffffff" />
+                  <circle cx="50" cy="87" r="3" fill="#ffffff" />
+                  <rect x="42" y="11" width="16" height="3" rx="1.5" fill="#475569" />
+                  <!-- Pantalla ECG / Salud -->
+                  <rect x="31" y="18" width="38" height="32" rx="2" fill="#eff6ff" />
+                  <path d="M33 34 H38 L42 24 L48 44 L54 28 L58 34 H67" stroke="#c62828" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                  <!-- Apps cuadrantes -->
+                  <rect x="33" y="54" width="16" height="11" rx="2" fill="#7a9a1e" />
+                  <rect x="53" y="54" width="16" height="11" rx="2" fill="#0284c7" />
+                  <rect x="33" y="68" width="16" height="11" rx="2" fill="#f59e0b" />
+                  <rect x="53" y="68" width="16" height="11" rx="2" fill="#64748b" />
+                </svg>
+              </div>
+
+              <h2 class="col-titulo">TELEMEDICINA:</h2>
+              <div class="telefonos-destacados">
+                <p class="txt-llamada">Llamar a los números de asistencia:</p>
+                <div class="tel-pills">
+                  <span class="tel-badge">0500-HISPANA (4477262)</span>
+                  <span class="tel-badge">0212-313.85.74</span>
+                  <span class="tel-badge">0412-372.05.75</span>
                 </div>
               </div>
-              <div class="branding-header">
-                <img src="../img/logo.png" alt="Félix García - Corredor de Seguros" class="logo-guia">
-                <span class="slogan-fg">El Seguro no es un gasto, es una Inversión</span>
+
+              <div class="pasos-atencion">
+                <p><strong>1. Validación:</strong> El Call Center solicita datos personales y valida tu cobertura
+                  activa.</p>
+                <p><strong>2. Orientación Médica:</strong> Un médico evalúa la condición de salud de forma remota y
+                  define el plan de tratamiento o gestiona el traslado inmediato hacia un centro asistencial privado
+                  si lo amerita.</p>
               </div>
             </div>
 
-            <!-- Cuerpo Tríptico en 3 Columnas Estructuradas -->
-            <div class="triptico-grid">
-
-              <!-- Columna 1: Servicios a tu alcance -->
-              <div class="col-triptico col-1">
-                <div class="ilustracion-box">
-                  <svg viewBox="0 0 100 100" class="svg-il" fill="none">
-                    <!-- Fachada Hospital moderno -->
-                    <polygon points="50,14 86,30 14,30" fill="#1f3f8a" />
-                    <rect x="20" y="30" width="60" height="58" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" />
-                    <!-- Cruz roja médica -->
-                    <circle cx="50" cy="46" r="13" fill="#ffffff" stroke="#c62828" stroke-width="2.5" />
-                    <path d="M50 38 V54 M42 46 H58" stroke="#c62828" stroke-width="4.5" stroke-linecap="round" />
-                    <!-- Ventanas y entrada -->
-                    <rect x="26" y="62" width="10" height="12" fill="#7a9a1e" />
-                    <rect x="64" y="62" width="10" height="12" fill="#7a9a1e" />
-                    <rect x="43" y="66" width="14" height="22" rx="2" fill="#1f3f8a" />
-                    <!-- Ambulancia rápida -->
-                    <rect x="66" y="72" width="26" height="16" rx="2" fill="#ffffff" stroke="#1f3f8a"
-                      stroke-width="2" />
-                    <circle cx="72" cy="88" r="4" fill="#334155" />
-                    <circle cx="86" cy="88" r="4" fill="#334155" />
-                    <path d="M78 76 V82 M75 79 H81" stroke="#c62828" stroke-width="2" />
-                  </svg>
+            <!-- Columna 3: Salas de Urgencias Aliadas -->
+            <div class="col-triptico col-3">
+              <div class="ilustracion-box il-wide">
+                <!-- Miniatura de salas de urgencias -->
+                <div class="urgencias-tags-visual">
+                  <span class="tag-urg tag-azul">Policlínica Las Industrias</span>
+                  <span class="tag-urg tag-rojo">Urgent Care (Concepto La Viña)</span>
+                  <span class="tag-urg tag-verde">Clínica Valles de San Diego</span>
                 </div>
+              </div>
 
-                <h2 class="col-titulo">SERVICIOS A TU ALCANCE</h2>
-                <ul class="lista-servicios-guia">
-                  <li><strong>HCM</strong> (Hospitalización, Cirugía y Maternidad)</li>
-                  <li><strong>Telemedicina</strong> 24/7</li>
-                  <li><strong>Entrega de Medicamentos</strong></li>
-                  <li><strong>Atención In situ</strong></li>
-                  <li><strong>Urgencias</strong></li>
-                  <li><strong>Emergencia</strong></li>
+              <h2 class="col-titulo">SALAS DE URGENCIAS:</h2>
+              <div class="beneficio-urgencias">
+                <p class="destaque-cobertura">
+                  <strong>Atención ilimitada de urgencias</strong> sin aplicación de deducible ni afectación de
+                  siniestralidad.
+                </p>
+              </div>
+
+              <div class="centros-red">
+                <span class="sub-centros">SALAS DE URGENCIAS A TU ALCANCE:</span>
+                <ul class="lista-centros">
+                  <li><strong>Policlínica Las Industrias</strong></li>
+                  <li><strong>Urgent Care</strong> (Concepto La Viña, Piso 5)</li>
+                  <li><strong>Clínica Valles de San Diego</strong></li>
                 </ul>
               </div>
 
-              <!-- Columna 2: Telemedicina y Pasos -->
-              <div class="col-triptico col-2">
-                <div class="ilustracion-box">
-                  <svg viewBox="0 0 100 100" class="svg-il" fill="none">
-                    <!-- Teléfono inteligente -->
-                    <rect x="25" y="8" width="50" height="84" rx="8" fill="#1f3f8a" />
-                    <rect x="29" y="16" width="42" height="66" rx="3" fill="#ffffff" />
-                    <circle cx="50" cy="87" r="3" fill="#ffffff" />
-                    <rect x="42" y="11" width="16" height="3" rx="1.5" fill="#475569" />
-                    <!-- Pantalla ECG / Salud -->
-                    <rect x="31" y="18" width="38" height="32" rx="2" fill="#eff6ff" />
-                    <path d="M33 34 H38 L42 24 L48 44 L54 28 L58 34 H67" stroke="#c62828" stroke-width="2.5"
-                      stroke-linecap="round" stroke-linejoin="round" />
-                    <!-- Apps cuadrantes -->
-                    <rect x="33" y="54" width="16" height="11" rx="2" fill="#7a9a1e" />
-                    <rect x="53" y="54" width="16" height="11" rx="2" fill="#0284c7" />
-                    <rect x="33" y="68" width="16" height="11" rx="2" fill="#f59e0b" />
-                    <rect x="53" y="68" width="16" height="11" rx="2" fill="#64748b" />
-                  </svg>
-                </div>
-
-                <h2 class="col-titulo">TELEMEDICINA:</h2>
-                <div class="telefonos-destacados">
-                  <p class="txt-llamada">Llamar a los números de asistencia:</p>
-                  <div class="tel-pills">
-                    <span class="tel-badge">0500-HISPANA (4477262)</span>
-                    <span class="tel-badge">0212-313.85.74</span>
-                    <span class="tel-badge">0412-372.05.75</span>
-                  </div>
-                </div>
-
-                <div class="pasos-atencion">
-                  <p><strong>1. Validación:</strong> El Call Center solicita datos personales y valida tu cobertura
-                    activa.</p>
-                  <p><strong>2. Orientación Médica:</strong> Un médico evalúa la condición de salud de forma remota y
-                    define el plan de tratamiento o gestiona el traslado inmediato hacia un centro asistencial privado
-                    si lo amerita.</p>
-                </div>
+              <div class="aviso-24h">
+                <span class="reloj-icon">⏰</span>
+                <strong>ATENCIÓN LAS 24 HORAS DEL DÍA, LOS 365 DÍAS DEL AÑO</strong>
               </div>
 
-              <!-- Columna 3: Salas de Urgencias Aliadas -->
-              <div class="col-triptico col-3">
-                <div class="ilustracion-box il-wide">
-                  <!-- Miniatura de salas de urgencias -->
-                  <div class="urgencias-tags-visual">
-                    <span class="tag-urg tag-azul">Policlínica Las Industrias</span>
-                    <span class="tag-urg tag-rojo">Urgent Care (Concepto La Viña)</span>
-                    <span class="tag-urg tag-verde">Clínica Valles de San Diego</span>
-                  </div>
-                </div>
-
-                <h2 class="col-titulo">SALAS DE URGENCIAS:</h2>
-                <div class="beneficio-urgencias">
-                  <p class="destaque-cobertura">
-                    <strong>Atención ilimitada de urgencias</strong> sin aplicación de deducible ni afectación de
-                    siniestralidad.
-                  </p>
-                </div>
-
-                <div class="centros-red">
-                  <span class="sub-centros">SALAS DE URGENCIAS A TU ALCANCE:</span>
-                  <ul class="lista-centros">
-                    <li><strong>Policlínica Las Industrias</strong></li>
-                    <li><strong>Urgent Care</strong> (Concepto La Viña, Piso 5)</li>
-                    <li><strong>Clínica Valles de San Diego</strong></li>
-                  </ul>
-                </div>
-
-                <div class="aviso-24h">
-                  <span class="reloj-icon">⏰</span>
-                  <strong>ATENCIÓN LAS 24 HORAS DEL DÍA, LOS 365 DÍAS DEL AÑO</strong>
+              <!-- Insignia QR para escanear en la versión impresa -->
+              <div class="qr-impreso-triptico">
+                <img src="" alt="Código QR Guía Médica PDF" class="img-qr-doc" id="imgQrDoc">
+                <div class="qr-textos-doc">
+                  <strong>ESCANEA CON TU MÓVIL</strong>
+                  <span>Para abrir y descargar la guía en PDF</span>
                 </div>
               </div>
-
             </div>
 
-            <!-- Pie de Página Decorativo con Ondas -->
-            <footer class="pie-guia">
-              <div class="pie-ondas">
-                <svg viewBox="0 0 1200 80" preserveAspectRatio="none" class="svg-ondas">
-                  <!-- Onda roja de fondo -->
-                  <path d="M0,45 C250,5 500,75 1200,30 L1200,80 L0,80 Z" fill="#c62828"></path>
-                  <!-- Onda azul al frente -->
-                  <path d="M0,55 C350,25 750,70 1200,45 L1200,80 L0,80 Z" fill="#1f3f8a"></path>
-                </svg>
-              </div>
-              <div class="pie-info">
-                <span>Félix García · Corredor de Seguros · Hispana de Seguros · Asesoría Integral y Acompañamiento en
-                  Siniestros</span>
-              </div>
-            </footer>
+          </div>
+
+          <!-- Pie de Página Decorativo con Ondas -->
+          <footer class="pie-guia">
+            <div class="pie-ondas">
+              <svg viewBox="0 0 1200 80" preserveAspectRatio="none" class="svg-ondas">
+                <!-- Onda roja de fondo -->
+                <path d="M0,45 C250,5 500,75 1200,30 L1200,80 L0,80 Z" fill="#c62828"></path>
+                <!-- Onda azul al frente -->
+                <path d="M0,55 C350,25 750,70 1200,45 L1200,80 L0,80 Z" fill="#1f3f8a"></path>
+              </svg>
+            </div>
+            <div class="pie-info">
+              <span>Félix García · Corredor de Seguros · Hispana de Seguros · Asesoría Integral y Acompañamiento en
+                Siniestros</span>
+            </div>
+          </footer>
         </article>
       </div>
     </section>
