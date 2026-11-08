@@ -269,13 +269,26 @@ body {
   padding: 24px 44px 14px;
 }
 
+.header-izq {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: -44px;
+}
+
+.logo-hispana {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+  margin-left: 20px;
+}
+
 .pill-titulo {
   background: linear-gradient(135deg, #0284c7, #1f3f8a);
   color: #fff;
-  padding: 10px 42px 10px 48px;
+  padding: 10px 42px 10px 32px;
   border-radius: 0 30px 30px 0;
   box-shadow: 2px 4px 10px rgba(31, 63, 138, .28);
-  margin-left: -44px;
 }
 
 .pill-tag {
@@ -522,6 +535,3 @@ body {
   }
 
 }
-
-
-
