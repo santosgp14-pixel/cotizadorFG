@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Control de Siniestros – Félix García</title>
+  <link rel="icon" href="../img/logo.png">
+  <link rel="stylesheet" href="css/siniestros.css">
+</head>
+
+<body>
+  <header class="app-header no-print">
+    <a href="../" title="Volver al inicio"><img src="../img/logo.png" alt="Félix García" class="app-logo"></a>
+    <div>
+      <h1>Control de Siniestros</h1>
+      <p id="subtitulo">Registro y listados</p>
+    </div>
+    <div class="header-der">
+      <span class="usuario" id="usuario"></span>
+      <button type="button" class="btn btn-ghost btn-sm" id="btnSalir" hidden>Salir</button>
+      <a href="../" class="btn-inicio">← Herramientas</a>
+    </div>
+  </header>
+
+  <!-- Aviso de configuración -->
+  <section class="panel aviso no-print" id="vistaConfig" hidden>
+    <h2>Falta configurar Firebase</h2>
+    <p>Edita <code>siniestros/js/firebase-config.js</code> con los datos de tu proyecto. Los pasos están en el README.</p>
+  </section>
+
+  <!-- Login -->
+  <section class="panel login no-print" id="vistaLogin" hidden>
+    <h2>Iniciar sesión</h2>
+    <form id="formLogin">
+      <label>Correo
+        <input type="email" id="loginEmail" autocomplete="username" required>
+      </label>
+      <label>Contraseña
+        <input type="password" id="loginPass" autocomplete="current-password" required>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="loginRecordar">
+        Mantener la sesión iniciada
+      </label>
+      <button type="submit" class="btn btn-primary">Entrar</button>
+      <p class="msg" id="loginMsg"></p>
+    </form>
+  </section>
+
+  <!-- Aplicación -->
+  <main class="contenido" id="vistaApp" hidden>
+    <div class="toolbar no-print">
+      <nav class="tabs" id="tabs" role="tablist">
+        <button type="button" data-vista="todos" class="activo">Todos</button>
+        <button type="button" data-vista="titulares">Titulares</button>
+        <button type="button" data-vista="familiares">Familiares</button>
+        <button type="button" data-vista="causa">Por causa</button>
+        <button type="button" data-vista="pagados">Pagados</button>
+        <button type="button" data-vista="pendientes">Pendientes</button>
+      </nav>
+      <button type="button" class="btn btn-secondary" id="btnNuevo">+ Nuevo siniestro</button>
+    </div>
+
+    <div class="filtros panel no-print">
+      <label class="grow">Buscar (cédula o nombre)
+        <input type="search" id="fTexto" autocomplete="off">
+      </label>
+      <label>Estatus
+        <select id="fEstatus"><option value="">Todos</option></select>
+      </label>
+      <label>Causa
+        <select id="fCausa"><option value="">Todas</option></select>
+      </label>
+      <label>Ocurrencia desde
+        <input type="date" id="fDesde">
+      </label>
+      <label>hasta
+        <input type="date" id="fHasta">
+      </label>
+      <button type="button" class="btn btn-ghost" id="btnLimpiarFiltros">Limpiar</button>
+    </div>
+
+    <div class="resumen" id="resumen"></div>
+
+    <section class="panel listado">
+      <div class="listado-head">
+        <div>
+          <h2 id="tituloListado">Todos los siniestros</h2>
+          <p class="filtros-print" id="filtrosPrint"></p>
+        </div>
+        <div class="no-print acciones-listado">
+          <button type="button" class="btn btn-ghost btn-sm" id="btnCsv">Exportar CSV</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btnImprimir">Imprimir</button>
+        </div>
+      </div>
+      <div class="tabla-wrap" id="tablaWrap"></div>
+      <p class="vacio" id="vacio" hidden>No hay siniestros para mostrar.</p>
+    </section>
+  </main>
+
+  <!-- Formulario de siniestro -->
+  <dialog id="dlg" class="no-print">
+    <form id="formSiniestro" novalidate>
+      <h2 id="dlgTitulo">Nuevo siniestro</h2>
+      <div class="form-grid">
+        <label>Cédula del titular *
+          <input type="text" id="sCedula" required autocomplete="off" placeholder="V-12345678">
+          <small class="hint" id="hintCedula"></small>
+        </label>
+        <label>Parentesco *
+          <select id="sParentesco" required></select>
+        </label>
+        <label class="span2">Nombre del paciente *
+          <input type="text" id="sNombre" required autocomplete="off" list="dlNombres">
+        </label>
+        <label>Fecha de nacimiento *
+          <input type="date" id="sNacimiento" required>
+        </label>
+        <label>Fecha de ocurrencia *
+          <input type="date" id="sOcurrencia" required>
+        </label>
+        <label class="span2">Causa del siniestro *
+          <input type="text" id="sCausa" required autocomplete="off" list="dlCausas">
+        </label>
+        <label>Estatus *
+          <select id="sEstatus" required></select>
+        </label>
+        <span></span>
+        <label>Monto pagado
+          <input type="number" id="sPagado" min="0" step="0.01" inputmode="decimal" value="0">
+        </label>
+        <label>Monto rechazado
+          <input type="number" id="sRechazado" min="0" step="0.01" inputmode="decimal" value="0">
+        </label>
+      </div>
+      <p class="msg" id="dlgMsg"></p>
+      <div class="dlg-acciones">
+        <button type="button" class="btn btn-peligro" id="btnEliminar" hidden>Eliminar</button>
+        <span class="sep"></span>
+        <button type="button" class="btn btn-ghost" id="btnCancelar">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <datalist id="dlCausas"></datalist>
+  <datalist id="dlNombres"></datalist>
+
+  <script type="module" src="js/siniestros.js"></script>
+</body>
+
+</html>
+

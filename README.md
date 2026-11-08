@@ -14,9 +14,30 @@ Portal estático con accesos a distintas herramientas. Pensado para publicarse e
 ├── cotizador/            ← Cotizador AJEVEN
 │   ├── index.html
 │   ├── css/  js/
+├── siniestros/           ← Control de Siniestros (Firebase)
+│   ├── index.html
+│   ├── css/  js/firebase-config.js  js/siniestros.js
+├── firestore.rules       ← reglas de seguridad de la base de datos
 ├── .nojekyll             ← GitHub Pages sirve los archivos tal cual
 └── server.js             ← servidor local opcional (node server.js)
 ```
+
+## Control de Siniestros – configurar Firebase (una sola vez)
+
+1. **Crear proyecto**: https://console.firebase.google.com → *Agregar proyecto* (Analytics no es necesario).
+2. **Firestore**: *Compilación → Firestore Database → Crear base de datos* → modo producción → región cercana (ej. `southamerica-east1`).
+3. **Authentication**: *Compilación → Authentication → Comenzar → Correo electrónico/contraseña → Habilitar*.
+   - Pestaña *Users → Agregar usuario*: tu correo y una contraseña fuerte.
+   - Copia el **User UID** que aparece en la lista.
+   - *Settings → Dominios autorizados → Agregar dominio*: `USUARIO.github.io` (`localhost` ya viene incluido).
+   - Opcional: *Settings → User actions* → desmarcar *Enable create (sign-up)*.
+4. **Reglas**: abre `firestore.rules`, reemplaza `TU_UID` por tu UID y pega el contenido en
+   *Firestore Database → Reglas → Publicar*.
+5. **App web**: *Configuración del proyecto (⚙) → Tus apps → `</>` Web* → registrar → copia el objeto
+   `firebaseConfig` en `siniestros/js/firebase-config.js`.
+
+> No hace falta crear índices: la app ordena y filtra en el navegador.
+> Los valores de `firebase-config.js` no son secretos; la seguridad la dan las reglas (solo tu UID puede leer/escribir).
 
 ## Agregar una herramienta
 

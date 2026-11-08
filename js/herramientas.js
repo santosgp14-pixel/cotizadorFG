@@ -23,13 +23,13 @@ const HERRAMIENTAS = [
     estado: 'activo',
   },
   {
-    id: 'proxima',
-    titulo: 'Nueva herramienta',
-    descripcion: 'Espacio reservado para la próxima herramienta.',
-    url: '#',
-    icono: '🧰',
-    categoria: 'Utilidades',
-    estado: 'proximamente',
+    id: 'siniestros',
+    titulo: 'Control de Siniestros',
+    descripcion: 'Registro de siniestros y listados por titular, familiar, causa, pagados y pendientes.',
+    url: 'siniestros/',
+    icono: '📋',
+    categoria: 'Gestión',
+    estado: 'activo',
   },
 ];
 
