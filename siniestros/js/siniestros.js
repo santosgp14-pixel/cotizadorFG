@@ -11,6 +11,7 @@ import { firebaseConfig } from './firebase-config.js';
 
 // ---------- Catálogos ----------
 const PARENTESCOS = ['Titular', 'Cónyuge', 'Hijo(a)', 'Padre', 'Madre', 'Otro'];
+const TIPOS_SERVICIO = ['Consulta', 'Reembolso', 'Emergencia', 'Hospitalización', 'Farmacia', 'Odontología', 'Otro'];
 const ESTATUS = ['Pendiente', 'En revisión', 'Pagado', 'Pagado parcial', 'Rechazado'];
 const EST_PAGADOS = ['Pagado', 'Pagado parcial'];
 const EST_PENDIENTES = ['Pendiente', 'En revisión'];
@@ -28,6 +29,7 @@ const COLUMNAS = [
   { key: 'cedula', titulo: 'Cédula' },
   { key: 'nombre', titulo: 'Nombre' },
   { key: 'parentesco', titulo: 'Parentesco' },
+  { key: 'tipoServicio', titulo: 'Servicio' },
   { key: 'fechaNacimiento', titulo: 'F. nacimiento' },
   { key: 'causa', titulo: 'Causa' },
   { key: 'fechaOcurrencia', titulo: 'F. ocurrencia' },
@@ -84,8 +86,10 @@ if (!configurado) {
 
 function iniciar(auth, db, col) {
   llenarSelect($('#sParentesco'), PARENTESCOS);
+  llenarSelect($('#sTipoServicio'), TIPOS_SERVICIO);
   llenarSelect($('#sEstatus'), ESTATUS);
   llenarSelect($('#fEstatus'), ESTATUS);
+  llenarSelect($('#fTipoServicio'), TIPOS_SERVICIO);
 
   // ----- Autenticación -----
   onAuthStateChanged(auth, (user) => {
@@ -139,10 +143,10 @@ function iniciar(auth, db, col) {
     const b = e.target.closest('button[data-vista]');
     if (b) cambiarVista(b.dataset.vista);
   });
-  ['#fTexto', '#fEstatus', '#fCausa', '#fDesde', '#fHasta'].forEach((id) =>
-    $(id).addEventListener('input', render));
+  ['#fTexto', '#fEstatus', '#fTipoServicio', '#fCausa', '#fDesde', '#fHasta'].forEach((id) =>
+    $(id)?.addEventListener('input', render));
   $('#btnLimpiarFiltros').addEventListener('click', () => {
-    ['#fTexto', '#fEstatus', '#fCausa', '#fDesde', '#fHasta'].forEach((id) => { $(id).value = ''; });
+    ['#fTexto', '#fEstatus', '#fTipoServicio', '#fCausa', '#fDesde', '#fHasta'].forEach((id) => { if ($(id)) $(id).value = ''; });
     render();
   });
 
@@ -220,6 +224,7 @@ function abrirDialogo(s) {
   $('#sParentesco').value = s?.parentesco ?? 'Titular';
   $('#sNacimiento').value = s?.fechaNacimiento ?? '';
   $('#sCausa').value = s?.causa ?? '';
+  $('#sTipoServicio').value = s?.tipoServicio ?? 'Consulta';
   $('#sOcurrencia').value = s?.fechaOcurrencia ?? '';
   $('#sEstatus').value = s?.estatus ?? 'Pendiente';
   $('#sPagado').value = s?.montoPagado ?? 0;
@@ -252,7 +257,7 @@ function sugerirPorCedula() {
 
 function leerFormulario() {
   const msg = $('#dlgMsg');
-  const campos = ['#sCedula', '#sNombre', '#sParentesco', '#sNacimiento', '#sCausa', '#sOcurrencia', '#sEstatus'];
+  const campos = ['#sCedula', '#sNombre', '#sParentesco', '#sNacimiento', '#sCausa', '#sTipoServicio', '#sOcurrencia', '#sEstatus'];
   let faltan = false;
   campos.forEach((id) => {
     const vacio = !$(id).value.trim();
@@ -265,6 +270,7 @@ function leerFormulario() {
     cedula: normCedula($('#sCedula').value),
     nombre: normTexto($('#sNombre').value),
     parentesco: $('#sParentesco').value,
+    tipoServicio: $('#sTipoServicio').value,
     fechaNacimiento: $('#sNacimiento').value,
     causa: normTexto($('#sCausa').value),
     fechaOcurrencia: $('#sOcurrencia').value,
@@ -316,6 +322,7 @@ function actualizarCatalogos() {
 function filtrados() {
   const txt = $('#fTexto').value.trim().toLowerCase();
   const est = $('#fEstatus').value;
+  const serv = $('#fTipoServicio')?.value || '';
   const causa = $('#fCausa').value;
   const desde = $('#fDesde').value;
   const hasta = $('#fHasta').value;
@@ -323,6 +330,7 @@ function filtrados() {
     LISTADOS[vista].filtro(s)
     && (!txt || s.cedula.toLowerCase().includes(txt) || s.nombre.toLowerCase().includes(txt))
     && (!est || s.estatus === est)
+    && (!serv || (s.tipoServicio || 'Consulta') === serv)
     && (!causa || claveCausa(s.causa) === claveCausa(causa))
     && (!desde || s.fechaOcurrencia >= desde)
     && (!hasta || s.fechaOcurrencia <= hasta));
@@ -409,6 +417,7 @@ function render() {
           <td class="left nowrap">${escapeHtml(s.cedula)}</td>
           <td class="left">${escapeHtml(s.nombre)}</td>
           <td class="left">${escapeHtml(s.parentesco)}</td>
+          <td class="left nowrap"><span class="badge-serv">${escapeHtml(s.tipoServicio || 'Consulta')}</span></td>
           <td class="left nowrap">${fecha(s.fechaNacimiento)}${edad !== null ? ` <small>(${edad})</small>` : ''}</td>
           <td class="left">${escapeHtml(s.causa)}</td>
           <td class="left nowrap">${fecha(s.fechaOcurrencia)}</td>
@@ -419,7 +428,7 @@ function render() {
       }).join('')}
       </tbody>
       <tfoot><tr>
-        <td colspan="7" class="right">TOTAL (${t.cantidad})</td>
+        <td colspan="8" class="right">TOTAL (${t.cantidad})</td>
         <td class="right nowrap">${money(t.pagado)}</td>
         <td class="right nowrap">${money(t.rechazado)}</td>
       </tr></tfoot>
@@ -455,8 +464,8 @@ function exportarCsv() {
     filas = [['Causa', 'Cantidad', 'Pendientes', 'Pagado', 'Rechazado'],
       ...porCausa(lista).map((g) => [g.causa, g.cantidad, g.pendientes, num(g.pagado), num(g.rechazado)])];
   } else {
-    filas = [['Cédula', 'Nombre', 'Parentesco', 'Fecha nacimiento', 'Causa', 'Fecha ocurrencia', 'Estatus', 'Monto pagado', 'Monto rechazado'],
-      ...lista.map((s) => [s.cedula, s.nombre, s.parentesco, fecha(s.fechaNacimiento), s.causa,
+    filas = [['Cédula', 'Nombre', 'Parentesco', 'Servicio', 'Fecha nacimiento', 'Causa', 'Fecha ocurrencia', 'Estatus', 'Monto pagado', 'Monto rechazado'],
+      ...lista.map((s) => [s.cedula, s.nombre, s.parentesco, s.tipoServicio || 'Consulta', fecha(s.fechaNacimiento), s.causa,
         fecha(s.fechaOcurrencia), s.estatus, num(s.montoPagado), num(s.montoRechazado)])];
   }
   const csv = '\uFEFF' + filas.map((f) => f.map(celda).join(';')).join('\r\n');

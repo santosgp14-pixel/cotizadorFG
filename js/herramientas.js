@@ -31,5 +31,14 @@ const HERRAMIENTAS = [
     categoria: 'Gestión',
     estado: 'activo',
   },
+  {
+    id: 'dashboard-siniestros',
+    titulo: 'Dashboard de Siniestros',
+    descripcion: 'Análisis de siniestralidad, causas principales, consultas vs reembolsos y tasas de cierre.',
+    url: 'dashboard/',
+    icono: '📊',
+    categoria: 'Gestión',
+    estado: 'activo',
+  },
 ];
 

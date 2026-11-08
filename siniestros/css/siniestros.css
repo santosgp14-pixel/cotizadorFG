@@ -42,6 +42,17 @@ body {
   white-space: nowrap;
 }
 .btn-inicio:hover { background: var(--azul-claro); }
+.btn-dashboard {
+  padding: 8px 14px;
+  background: var(--verde);
+  border-radius: 6px;
+  color: #fff;
+  text-decoration: none;
+  font-size: .9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.btn-dashboard:hover { background: #637e17; }
 
 /* ---------- Genéricos ---------- */
 .contenido { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
@@ -206,6 +217,16 @@ input.invalido, select.invalido { border-color: var(--rojo); background: #fdf3f3
 .est-pagado { background: #eaf3d6; color: #4d6410; }
 .est-pagado-parcial { background: #f1f6e2; color: #637e17; border: 1px dashed #9bb54a; }
 .est-rechazado { background: #fdecec; color: var(--rojo); }
+
+.badge-serv {
+  display: inline-block;
+  font-size: .75rem;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: #eef1f6;
+  color: var(--azul);
+  font-weight: 500;
+}
 
 .vacio { color: var(--gris); text-align: center; padding: 24px 0; margin: 0; }
 

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Dashboard de Siniestros – Félix García</title>
+  <link rel="icon" href="../img/logo.png">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <!-- Chart.js para visualizaciones fluidas y responsivas -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+  <header class="app-header no-print">
+    <a href="../" title="Volver al inicio"><img src="../img/logo.png" alt="Félix García" class="app-logo"></a>
+    <div>
+      <h1>Dashboard de Siniestros</h1>
+      <p id="subtitulo">Métricas, comportamiento y análisis de siniestralidad</p>
+    </div>
+    <div class="header-der">
+      <a href="../siniestros/" class="btn-reg">📋 Gestión de Siniestros</a>
+      <a href="../" class="btn-inicio">← Herramientas</a>
+    </div>
+  </header>
+
+  <!-- Contenido Dashboard -->
+    <main class="contenido" id="vistaDashboard">
+      <!-- Filtros analíticos -->
+      <section class="panel filtros no-print">
+        <div class="filtros-grupo">
+          <label>Rango de fecha
+            <select id="fPeriodo">
+              <option value="todo">Histórico completo</option>
+              <option value="este-mes">Este mes</option>
+              <option value="mes-ant">Mes anterior</option>
+              <option value="este-ano" selected>Este año</option>
+              <option value="personalizado">Personalizado...</option>
+            </select>
+          </label>
+          <label id="lblDesde">Desde
+            <input type="date" id="dDesde">
+          </label>
+          <label id="lblHasta">Hasta
+            <input type="date" id="dHasta">
+          </label>
+          <label>Parentesco
+            <select id="fParentesco">
+              <option value="">Todos</option>
+              <option value="Titular">Solo Titulares</option>
+              <option value="Familiares">Solo Familiares</option>
+            </select>
+          </label>
+          <label>Tipo de servicio
+            <select id="fServicio">
+              <option value="">Todos los servicios</option>
+            </select>
+          </label>
+          <button type="button" class="btn btn-ghost" id="btnReset">Restablecer</button>
+        </div>
+        <div class="filtros-acciones">
+          <button type="button" class="btn btn-ghost btn-sm" id="btnImprimir">Imprimir informe</button>
+        </div>
+      </section>
+
+      <!-- Fila de KPIs principales -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">Total Siniestros</span>
+          <strong class="kpi-val" id="kpiTotal">0</strong>
+          <span class="kpi-sub" id="kpiTitVsFam">0 titulares · 0 familiares</span>
+        </div>
+        <div class="kpi-card kpi-card-verde">
+          <span class="kpi-label">Monto Pagado</span>
+          <strong class="kpi-val" id="kpiPagado">$0,00</strong>
+          <span class="kpi-sub" id="kpiTasaPagado">0% de efectividad</span>
+        </div>
+        <div class="kpi-card kpi-card-rojo">
+          <span class="kpi-label">Monto Rechazado</span>
+          <strong class="kpi-val" id="kpiRechazado">$0,00</strong>
+          <span class="kpi-sub" id="kpiTasaRechazo">0% del total reclamado</span>
+        </div>
+        <div class="kpi-card kpi-card-ambar">
+          <span class="kpi-label">Casos Pendientes</span>
+          <strong class="kpi-val" id="kpiPendientes">0</strong>
+          <span class="kpi-sub" id="kpiPendientesSub">En revisión o trámite</span>
+        </div>
+      </section>
+
+      <!-- Fila de Mini KPIs Rápidos (Consultas vs Reembolsos) -->
+      <section class="servicios-grid" id="gridServicios"></section>
+
+      <!-- Gráficos fila 1: Causas (Pareto/Barras) + Estatus de Cierre (Dona) -->
+      <div class="charts-row">
+        <article class="panel chart-box chart-box-wide">
+          <div class="chart-header">
+            <div>
+              <h3>Top Causas de Siniestralidad</h3>
+              <span class="chart-desc">Frecuencia por patología o motivo médico</span>
+            </div>
+            <select id="selMetricaCausa" class="select-sm no-print">
+              <option value="casos">Por cantidad de casos</option>
+              <option value="monto">Por monto pagado ($)</option>
+            </select>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="chartCausas"></canvas>
+          </div>
+        </article>
+
+        <article class="panel chart-box">
+          <div class="chart-header">
+            <div>
+              <h3>Estatus y Cierre de Casos</h3>
+              <span class="chart-desc">Proporción de resolución</span>
+            </div>
+          </div>
+          <div class="canvas-wrap canvas-pie">
+            <canvas id="chartEstatus"></canvas>
+          </div>
+        </article>
+      </div>
+
+      <!-- Gráficos fila 2: Evolución Mensual + Distribución por Servicio -->
+      <div class="charts-row">
+        <article class="panel chart-box chart-box-wide">
+          <div class="chart-header">
+            <div>
+              <h3>Evolución Temporal de Siniestros</h3>
+              <span class="chart-desc">Monto pagado y volumen por mes</span>
+            </div>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="chartEvolucion"></canvas>
+          </div>
+        </article>
+
+        <article class="panel chart-box">
+          <div class="chart-header">
+            <div>
+              <h3>Distribución por Servicio</h3>
+              <span class="chart-desc">Consultas, reembolsos, emergencias...</span>
+            </div>
+          </div>
+          <div class="canvas-wrap canvas-pie">
+            <canvas id="chartServicios"></canvas>
+          </div>
+        </article>
+      </div>
+
+      <!-- Tabla Top Casos / Patologías destacadas -->
+      <section class="panel ranking-section">
+        <div class="ranking-header">
+          <h3>Detalle Estadístico por Causa</h3>
+          <span class="chart-desc" id="lblDetalleCount">Listado agrupado de siniestros</span>
+        </div>
+        <div class="tabla-wrap">
+          <table class="tabla-resumen">
+            <thead>
+              <tr>
+                <th class="left">Causa médica</th>
+                <th>Casos</th>
+                <th>% del Total</th>
+                <th class="right">Monto Pagado</th>
+                <th class="right">Monto Rechazado</th>
+                <th class="right">Costo Promedio / Caso</th>
+                <th>Pendientes</th>
+              </tr>
+            </thead>
+            <tbody id="tbCausasDetalle"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="js/dashboard.js"></script>
+</body>
+
+</html>

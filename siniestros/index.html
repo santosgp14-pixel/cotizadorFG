@@ -18,6 +18,7 @@
       <p id="subtitulo">Registro y listados</p>
     </div>
     <div class="header-der">
+      <a href="../dashboard/" class="btn-dashboard" title="Ver Dashboard de Siniestros">📊 Dashboard</a>
       <span class="usuario" id="usuario"></span>
       <button type="button" class="btn btn-ghost btn-sm" id="btnSalir" hidden>Salir</button>
       <a href="../" class="btn-inicio">← Herramientas</a>
@@ -27,7 +28,8 @@
   <!-- Aviso de configuración -->
   <section class="panel aviso no-print" id="vistaConfig" hidden>
     <h2>Falta configurar Firebase</h2>
-    <p>Edita <code>siniestros/js/firebase-config.js</code> con los datos de tu proyecto. Los pasos están en el README.</p>
+    <p>Edita <code>siniestros/js/firebase-config.js</code> con los datos de tu proyecto. Los pasos están en el README.
+    </p>
   </section>
 
   <!-- Login -->
@@ -68,10 +70,19 @@
         <input type="search" id="fTexto" autocomplete="off">
       </label>
       <label>Estatus
-        <select id="fEstatus"><option value="">Todos</option></select>
+        <select id="fEstatus">
+          <option value="">Todos</option>
+        </select>
+      </label>
+      <label>Tipo de servicio
+        <select id="fTipoServicio">
+          <option value="">Todos</option>
+        </select>
       </label>
       <label>Causa
-        <select id="fCausa"><option value="">Todas</option></select>
+        <select id="fCausa">
+          <option value="">Todas</option>
+        </select>
       </label>
       <label>Ocurrencia desde
         <input type="date" id="fDesde">
@@ -124,10 +135,12 @@
         <label class="span2">Causa del siniestro *
           <input type="text" id="sCausa" required autocomplete="off" list="dlCausas">
         </label>
+        <label>Tipo de servicio *
+          <select id="sTipoServicio" required></select>
+        </label>
         <label>Estatus *
           <select id="sEstatus" required></select>
         </label>
-        <span></span>
         <label>Monto pagado
           <input type="number" id="sPagado" min="0" step="0.01" inputmode="decimal" value="0">
         </label>
@@ -152,4 +165,3 @@
 </body>
 
 </html>
-

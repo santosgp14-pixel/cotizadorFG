@@ -21,13 +21,17 @@ service cloud.firestore {
         && d.fechaNacimiento is string && d.fechaNacimiento.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
         && d.fechaOcurrencia is string && d.fechaOcurrencia.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
         && d.causa is string && d.causa.size() > 0 && d.causa.size() <= 200
+        && (!('tipoServicio' in d) || d.tipoServicio in ['Consulta', 'Reembolso', 'Emergencia', 'Hospitalización', 'Farmacia', 'Odontología', 'Otro'])
         && d.estatus in ['Pendiente', 'En revisión', 'Pagado', 'Pagado parcial', 'Rechazado']
         && d.montoPagado is number && d.montoPagado >= 0
         && d.montoRechazado is number && d.montoRechazado >= 0;
     }
 
     match /siniestros/{id} {
-      allow read, delete: if esAdmin();
+      // Lectura pública para el Dashboard y consultas generales
+      allow read: if true;
+      // Creación, edición y eliminación estrictamente restringida a los administradores autorizados
+      allow delete: if esAdmin();
       allow create, update: if esAdmin() && esValido();
     }
 
