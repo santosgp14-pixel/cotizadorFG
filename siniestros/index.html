@@ -66,31 +66,31 @@
     </div>
 
     <div class="filtros panel no-print">
-      <label class="grow">Buscar (cédula o nombre)
-        <input type="search" id="fTexto" autocomplete="off">
-      </label>
-      <label>Estatus
-        <select id="fEstatus">
-          <option value="">Todos</option>
-        </select>
-      </label>
-      <label>Tipo de servicio
-        <select id="fTipoServicio">
-          <option value="">Todos</option>
-        </select>
-      </label>
-      <label>Causa
-        <select id="fCausa">
-          <option value="">Todas</option>
-        </select>
-      </label>
-      <label>Ocurrencia desde
-        <input type="date" id="fDesde">
-      </label>
-      <label>hasta
-        <input type="date" id="fHasta">
-      </label>
-      <button type="button" class="btn btn-ghost" id="btnLimpiarFiltros">Limpiar</button>
+        <label class="grow">Buscar (certificado, cédula o nombre)
+          <input type="search" id="fTexto" autocomplete="off">
+        </label>
+        <label>Estatus
+          <select id="fEstatus">
+            <option value="">Todos</option>
+          </select>
+        </label>
+        <label>Tipo de servicio
+          <select id="fTipoServicio">
+            <option value="">Todos</option>
+          </select>
+        </label>
+        <label>Causa
+          <select id="fCausa">
+            <option value="">Todas</option>
+          </select>
+        </label>
+        <label>Ocurrencia desde
+          <input type="date" id="fDesde">
+        </label>
+        <label>hasta
+          <input type="date" id="fHasta">
+        </label>
+        <button type="button" class="btn btn-ghost" id="btnLimpiarFiltros">Limpiar</button>
     </div>
 
     <div class="resumen" id="resumen"></div>
@@ -116,15 +116,18 @@
     <form id="formSiniestro" novalidate>
       <h2 id="dlgTitulo">Nuevo siniestro</h2>
       <div class="form-grid">
+        <label>Certificado
+          <input type="text" id="sCertificado" autocomplete="off" placeholder="N° de certificado">
+        </label>
         <label>Cédula del titular *
           <input type="text" id="sCedula" required autocomplete="off" placeholder="V-12345678">
           <small class="hint" id="hintCedula"></small>
         </label>
-        <label>Parentesco *
-          <select id="sParentesco" required></select>
-        </label>
         <label class="span2">Nombre del paciente *
           <input type="text" id="sNombre" required autocomplete="off" list="dlNombres">
+        </label>
+        <label>Parentesco *
+          <select id="sParentesco" required></select>
         </label>
         <label>Fecha de nacimiento *
           <input type="date" id="sNacimiento" required>
@@ -132,21 +135,21 @@
         <label>Fecha de ocurrencia *
           <input type="date" id="sOcurrencia" required>
         </label>
-        <label class="span2">Causa del siniestro *
-          <input type="text" id="sCausa" required autocomplete="off" list="dlCausas">
-        </label>
         <label>Tipo de servicio *
           <select id="sTipoServicio" required></select>
         </label>
-        <label>Estatus *
-          <select id="sEstatus" required></select>
+        <label class="span2">Causa del siniestro *
+          <input type="text" id="sCausa" required autocomplete="off" list="dlCausas">
         </label>
-        <label>Monto pagado
-          <input type="number" id="sPagado" min="0" step="0.01" inputmode="decimal" value="0">
-        </label>
-        <label>Monto rechazado
-          <input type="number" id="sRechazado" min="0" step="0.01" inputmode="decimal" value="0">
-        </label>
+          <label class="span2">Estatus *
+            <select id="sEstatus" required></select>
+          </label>
+          <label>Monto pagado
+            <input type="number" id="sPagado" min="0" step="0.01" inputmode="decimal" value="0">
+          </label>
+          <label>Monto rechazado
+            <input type="number" id="sRechazado" min="0" step="0.01" inputmode="decimal" value="0">
+          </label>
       </div>
       <p class="msg" id="dlgMsg"></p>
       <div class="dlg-acciones">

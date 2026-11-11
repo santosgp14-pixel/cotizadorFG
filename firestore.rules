@@ -15,7 +15,8 @@ service cloud.firestore {
 
     function esValido() {
       let d = request.resource.data;
-      return d.cedula is string && d.cedula.size() > 0 && d.cedula.size() <= 20
+      return (!('certificado' in d) || (d.certificado is string && d.certificado.size() <= 50))
+        && d.cedula is string && d.cedula.size() > 0 && d.cedula.size() <= 20
         && d.nombre is string && d.nombre.size() > 0 && d.nombre.size() <= 120
         && d.parentesco in ['Titular', 'Cónyuge', 'Hijo(a)', 'Padre', 'Madre', 'Otro']
         && d.fechaNacimiento is string && d.fechaNacimiento.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')

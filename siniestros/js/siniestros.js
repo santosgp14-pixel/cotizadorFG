@@ -17,15 +17,16 @@ const EST_PAGADOS = ['Pagado', 'Pagado parcial'];
 const EST_PENDIENTES = ['Pendiente', 'En revisión'];
 
 const LISTADOS = {
-  todos:      { titulo: 'Todos los siniestros',     filtro: () => true },
-  titulares:  { titulo: 'Siniestros de titulares',  filtro: (s) => s.parentesco === 'Titular' },
+  todos: { titulo: 'Todos los siniestros', filtro: () => true },
+  titulares: { titulo: 'Siniestros de titulares', filtro: (s) => s.parentesco === 'Titular' },
   familiares: { titulo: 'Siniestros de familiares', filtro: (s) => s.parentesco !== 'Titular' },
-  causa:      { titulo: 'Siniestros por causa',     filtro: () => true, resumen: true },
-  pagados:    { titulo: 'Siniestros pagados',       filtro: (s) => EST_PAGADOS.includes(s.estatus) },
-  pendientes: { titulo: 'Siniestros pendientes',    filtro: (s) => EST_PENDIENTES.includes(s.estatus) },
+  causa: { titulo: 'Siniestros por causa', filtro: () => true, resumen: true },
+  pagados: { titulo: 'Siniestros pagados', filtro: (s) => EST_PAGADOS.includes(s.estatus) },
+  pendientes: { titulo: 'Siniestros pendientes', filtro: (s) => EST_PENDIENTES.includes(s.estatus) },
 };
 
 const COLUMNAS = [
+  { key: 'certificado', titulo: 'Certificado' },
   { key: 'cedula', titulo: 'Cédula' },
   { key: 'nombre', titulo: 'Nombre' },
   { key: 'parentesco', titulo: 'Parentesco' },
@@ -133,7 +134,7 @@ function iniciar(auth, db, col) {
       msg.textContent = ['auth/invalid-credential', 'auth/wrong-password', 'auth/user-not-found', 'auth/invalid-email']
         .includes(err.code) ? 'Correo o contraseña incorrectos.'
         : err.code === 'auth/too-many-requests' ? 'Demasiados intentos. Espera unos minutos.'
-        : 'No se pudo iniciar sesión: ' + err.message;
+          : 'No se pudo iniciar sesión: ' + err.message;
     }
   });
   $('#btnSalir').addEventListener('click', () => signOut(auth));
@@ -174,6 +175,7 @@ function iniciar(auth, db, col) {
   const dlg = $('#dlg');
   $('#btnNuevo').addEventListener('click', () => abrirDialogo(null));
   $('#btnCancelar').addEventListener('click', () => dlg.close());
+  $('#sCertificado').addEventListener('input', sugerirPorCertificado);
   $('#sCedula').addEventListener('input', sugerirPorCedula);
   $('#sParentesco').addEventListener('change', sugerirPorCedula);
 
@@ -219,6 +221,7 @@ function abrirDialogo(s) {
   $('#dlgTitulo').textContent = s ? 'Editar siniestro' : 'Nuevo siniestro';
   $('#btnEliminar').hidden = !s;
   $('#dlgMsg').textContent = '';
+  $('#sCertificado').value = s?.certificado ?? '';
   $('#sCedula').value = s?.cedula ?? '';
   $('#sNombre').value = s?.nombre ?? '';
   $('#sParentesco').value = s?.parentesco ?? 'Titular';
@@ -234,10 +237,22 @@ function abrirDialogo(s) {
   document.querySelectorAll('#formSiniestro .invalido').forEach((el) => el.classList.remove('invalido'));
   sugerirPorCedula();
   $('#dlg').showModal();
-  $('#sCedula').focus();
+  $('#sCertificado').focus();
 }
 
-/** Muestra el titular conocido de la cédula y sugiere nombres/fecha de esa familia. */
+/** Si escribe primero el certificado y existe en el historial, autocompleta la cédula */
+function sugerirPorCertificado() {
+  if (editandoId) return;
+  const cert = normTexto($('#sCertificado').value).toLowerCase();
+  if (!cert) return;
+  const coincidente = siniestros.find((s) => s.certificado && s.certificado.toLowerCase() === cert);
+  if (coincidente && !$('#sCedula').value) {
+    $('#sCedula').value = coincidente.cedula;
+    sugerirPorCedula();
+  }
+}
+
+/** Muestra el titular conocido de la cédula y sugiere nombres/fecha/certificado de esa familia. */
 function sugerirPorCedula() {
   const ced = normCedula($('#sCedula').value);
   const familia = siniestros.filter((s) => s.cedula === ced);
@@ -253,6 +268,12 @@ function sugerirPorCedula() {
     $('#sNombre').value = titular.nombre;
     if (!$('#sNacimiento').value) $('#sNacimiento').value = titular.fechaNacimiento || '';
   }
+
+  // Autocompletar certificado si no se ha escrito y ya existe en la familia o titular
+  if (!editandoId && !$('#sCertificado').value) {
+    const certExistente = titular?.certificado || familia.find((s) => s.certificado)?.certificado;
+    if (certExistente) $('#sCertificado').value = certExistente;
+  }
 }
 
 function leerFormulario() {
@@ -267,6 +288,7 @@ function leerFormulario() {
   if (faltan) { msg.textContent = 'Completa los campos marcados.'; return null; }
 
   const d = {
+    certificado: normTexto($('#sCertificado').value),
     cedula: normCedula($('#sCedula').value),
     nombre: normTexto($('#sNombre').value),
     parentesco: $('#sParentesco').value,
@@ -328,7 +350,7 @@ function filtrados() {
   const hasta = $('#fHasta').value;
   return siniestros.filter((s) =>
     LISTADOS[vista].filtro(s)
-    && (!txt || s.cedula.toLowerCase().includes(txt) || s.nombre.toLowerCase().includes(txt))
+    && (!txt || (s.certificado && s.certificado.toLowerCase().includes(txt)) || s.cedula.toLowerCase().includes(txt) || s.nombre.toLowerCase().includes(txt))
     && (!est || s.estatus === est)
     && (!serv || (s.tipoServicio || 'Consulta') === serv)
     && (!causa || claveCausa(s.causa) === claveCausa(causa))
@@ -408,12 +430,13 @@ function render() {
   $('#tablaWrap').innerHTML = `
     <table class="tabla">
       <thead><tr>${COLUMNAS.map((c) =>
-        `<th data-key="${c.key}" class="${c.num ? 'right' : 'left'}">${c.titulo}${flecha(c.key)}</th>`).join('')}
+    `<th data-key="${c.key}" class="${c.num ? 'right' : 'left'}">${c.titulo}${flecha(c.key)}</th>`).join('')}
       </tr></thead>
       <tbody>${lista.map((s) => {
-        const edad = edadEn(s.fechaNacimiento, s.fechaOcurrencia);
-        return `
+      const edad = edadEn(s.fechaNacimiento, s.fechaOcurrencia);
+      return `
         <tr data-id="${s.id}" title="Editar">
+          <td class="left nowrap">${escapeHtml(s.certificado || '—')}</td>
           <td class="left nowrap">${escapeHtml(s.cedula)}</td>
           <td class="left">${escapeHtml(s.nombre)}</td>
           <td class="left">${escapeHtml(s.parentesco)}</td>
@@ -425,10 +448,10 @@ function render() {
           <td class="right nowrap">${money(s.montoPagado)}</td>
           <td class="right nowrap">${money(s.montoRechazado)}</td>
         </tr>`;
-      }).join('')}
+    }).join('')}
       </tbody>
       <tfoot><tr>
-        <td colspan="8" class="right">TOTAL (${t.cantidad})</td>
+        <td colspan="9" class="right">TOTAL (${t.cantidad})</td>
         <td class="right nowrap">${money(t.pagado)}</td>
         <td class="right nowrap">${money(t.rechazado)}</td>
       </tr></tfoot>
@@ -462,11 +485,11 @@ function exportarCsv() {
   let filas;
   if (LISTADOS[vista].resumen) {
     filas = [['Causa', 'Cantidad', 'Pendientes', 'Pagado', 'Rechazado'],
-      ...porCausa(lista).map((g) => [g.causa, g.cantidad, g.pendientes, num(g.pagado), num(g.rechazado)])];
+    ...porCausa(lista).map((g) => [g.causa, g.cantidad, g.pendientes, num(g.pagado), num(g.rechazado)])];
   } else {
-    filas = [['Cédula', 'Nombre', 'Parentesco', 'Servicio', 'Fecha nacimiento', 'Causa', 'Fecha ocurrencia', 'Estatus', 'Monto pagado', 'Monto rechazado'],
-      ...lista.map((s) => [s.cedula, s.nombre, s.parentesco, s.tipoServicio || 'Consulta', fecha(s.fechaNacimiento), s.causa,
-        fecha(s.fechaOcurrencia), s.estatus, num(s.montoPagado), num(s.montoRechazado)])];
+    filas = [['Certificado', 'Cédula', 'Nombre', 'Parentesco', 'Servicio', 'Fecha nacimiento', 'Causa', 'Fecha ocurrencia', 'Estatus', 'Monto pagado', 'Monto rechazado'],
+    ...lista.map((s) => [s.certificado || '', s.cedula, s.nombre, s.parentesco, s.tipoServicio || 'Consulta', fecha(s.fechaNacimiento), s.causa,
+    fecha(s.fechaOcurrencia), s.estatus, num(s.montoPagado), num(s.montoRechazado)])];
   }
   const csv = '\uFEFF' + filas.map((f) => f.map(celda).join(';')).join('\r\n');
   const a = document.createElement('a');
