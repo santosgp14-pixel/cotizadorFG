@@ -22,15 +22,23 @@
   <main class="layout">
     <!-- FORMULARIO -->
     <section class="panel no-print" id="formulario">
-      <h2>Titular (trabajador)</h2>
+      <div class="seccion-titulo">
+        <h2>Titular (trabajador)</h2>
+        <label class="check-cotizar"
+          title="Desmarca si el trabajador ya está asegurado y solo deseas cotizar a sus familiares">
+          <input type="checkbox" id="cotizarTitular" checked>
+          <span>Incluir titular</span>
+        </label>
+      </div>
       <div class="row">
         <label class="grow">Nombre completo
           <input type="text" id="titularNombre" placeholder="Ej. Juan Pérez" autocomplete="off">
         </label>
-        <label class="age">Edad
-          <input type="number" id="titularEdad" min="0" max="99" inputmode="numeric">
-        </label>
+          <label class="age" id="lblTitularEdad">Edad
+            <input type="number" id="titularEdad" min="0" max="99" inputmode="numeric">
+          </label>
       </div>
+      <p class="ayuda-modo" id="ayudaModo" hidden>Modo solo familiares: el titular no genera prima ni requiere edad.</p>
 
       <h2>Familiares</h2>
       <div id="familiares"></div>
